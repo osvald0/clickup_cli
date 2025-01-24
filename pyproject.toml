@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "clickup_cli"
+version = "0.1.0"
+description = "CLI tool for interacting with ClickUp"
+authors = ["Osvaldo Colina <osvaldo.colina@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "clickup_cli" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.0"
+python-dotenv = "^1.0"
+click = "^8.1.8"
+colorama = "^0.4.6"
+
+[tool.poetry.scripts]
+clickup-cli = "clickup_cli.cli:cli"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
