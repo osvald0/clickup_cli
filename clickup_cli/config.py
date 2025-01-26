@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 
+
 def get_config():
     """
     Load configuration from environment variables or .env file and validate required keys.
