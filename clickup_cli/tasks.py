@@ -1,12 +1,12 @@
 from clickup_cli.api import make_request
 from clickup_cli.config import get_config
-from clickup_cli.utils import format_date
+from clickup_cli.utils import format_date, hex_to_ansi, convert_ms_to_hm
 from colorama import Fore, Style
+from clickup_cli.types import Task
+from typing import List
 
-from colorama import Fore, Style
 
-
-def fetch_user_tasks(status_filter=None):
+def fetch_user_tasks(status_filter=None) -> List[Task]:
     """
     Fetch and display tasks assigned to the authorized user with a detailed format.
     By default, show only 'in progress' and 'planned' tasks unless specific statuses are provided.
@@ -64,13 +64,56 @@ def fetch_user_tasks(status_filter=None):
                 else Fore.GREEN
             )
             print(
-                f"- {status_color}[{task['status']['status']}] {Fore.YELLOW}{task['name']} (ID: {task['id']}){Style.RESET_ALL}"
+                f"- {status_color}[{task['status']['status']}] {Style.RESET_ALL}{task['name']} (ID: {task['id']})"
             )
-            print(f"  {Fore.MAGENTA}URL: {task['url']}{Style.RESET_ALL}")
+            print(f"  {Fore.MAGENTA}URL: {Style.RESET_ALL}{task['url']}")
             print(
-                f"  {Fore.CYAN}Due Date: {format_date(task.get('due_date'))}{Style.RESET_ALL}\n"
+                f"  {Fore.CYAN}Due Date: {Style.RESET_ALL}{format_date(task.get('due_date'))}\n"
             )
     else:
         print(f"{Fore.RED}No tasks found with the specified criteria.{Style.RESET_ALL}")
 
     return all_tasks
+
+
+def fetch_task_details(task_id):
+    """
+    Fetch and display details for the specified task id.
+    """
+    config = get_config()
+
+    response = make_request(
+        f"task/{task_id}",
+        params={
+            "include_custom_fields": True,
+            "subtasks": True,
+        },
+    )
+
+    if not response:
+        print(
+            f"{Fore.RED}No task found or error fetching task # {task_id}.{Style.RESET_ALL}"
+        )
+        print(response)
+        return
+
+    print(f"{Fore.YELLOW}ID: {Style.RESET_ALL}{response['id']}")
+    print(
+        f"{hex_to_ansi(response['status']['color'], "Status")}: {Style.RESET_ALL}{response['status']['status']}"
+    )
+    print(f"{Fore.RED}Priority: {Style.RESET_ALL}{response['priority']}")
+    print(
+        f"{Fore.GREEN}Start Date: {Style.RESET_ALL}{format_date(response['start_date'])}"
+    )
+    print(f"{Fore.RED}Due Date: {Style.RESET_ALL}{format_date(response['due_date'])}")
+    print(
+        f"{Fore.YELLOW}Estimate: {Style.RESET_ALL}{convert_ms_to_hm(response['time_estimate'])}"
+    )
+    print(
+        f"{Fore.MAGENTA}Type Spent: {Style.RESET_ALL}{convert_ms_to_hm(response['time_spent'])}"
+    )
+    print(f"{Fore.BLUE}Name: {Style.RESET_ALL}{response['name']}")
+    print(f"{Fore.MAGENTA}URL: {Style.RESET_ALL}{response['url']}")
+    print(f"{Fore.CYAN}Description: {Style.RESET_ALL}{response['description']}")
+
+    return response

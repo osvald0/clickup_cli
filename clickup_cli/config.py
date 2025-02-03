@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
+from clickup_cli.types import ClickupConfig
 
 
-def get_config():
+def get_config() -> ClickupConfig:
     """
     Load configuration from environment variables or .env file and validate required keys.
     """
@@ -15,6 +16,7 @@ def get_config():
     }
 
     missing_keys = [key for key, value in config.items() if not value]
+
     if missing_keys:
         raise ValueError(
             f"Missing required environment variables: {', '.join(missing_keys)}. "
