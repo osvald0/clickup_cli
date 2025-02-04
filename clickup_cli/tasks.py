@@ -97,23 +97,25 @@ def fetch_task_details(task_id):
         print(response)
         return
 
-    print(f"{Fore.YELLOW}ID: {Style.RESET_ALL}{response['id']}")
+    print(f"\n{Fore.YELLOW}Task details for ID: {Style.RESET_ALL}{response['id']}\n")
+
+    # print(f"  {Fore.YELLOW}ID: {Style.RESET_ALL}{response['id']}")
+    print(f"{Fore.YELLOW}Status: {Style.RESET_ALL}{response['status']['status']}")
+    print(f"{Fore.YELLOW}Priority: {Style.RESET_ALL}{response['priority']}")
     print(
-        f"{hex_to_ansi(response['status']['color'], "Status")}: {Style.RESET_ALL}{response['status']['status']}"
+        f"{Fore.YELLOW}Start Date: {Style.RESET_ALL}{format_date(response['start_date'])}"
     )
-    print(f"{Fore.RED}Priority: {Style.RESET_ALL}{response['priority']}")
     print(
-        f"{Fore.GREEN}Start Date: {Style.RESET_ALL}{format_date(response['start_date'])}"
+        f"{Fore.YELLOW}Due Date: {Style.RESET_ALL}{format_date(response['due_date'])}"
     )
-    print(f"{Fore.RED}Due Date: {Style.RESET_ALL}{format_date(response['due_date'])}")
     print(
         f"{Fore.YELLOW}Estimate: {Style.RESET_ALL}{convert_ms_to_hm(response['time_estimate'])}"
     )
     print(
-        f"{Fore.MAGENTA}Type Spent: {Style.RESET_ALL}{convert_ms_to_hm(response['time_spent'])}"
+        f"{Fore.YELLOW}Type Spent: {Style.RESET_ALL}{convert_ms_to_hm(response['time_spent'])}"
     )
-    print(f"{Fore.BLUE}Name: {Style.RESET_ALL}{response['name']}")
-    print(f"{Fore.MAGENTA}URL: {Style.RESET_ALL}{response['url']}")
-    print(f"{Fore.CYAN}Description: {Style.RESET_ALL}{response['description']}")
+    print(f"{Fore.YELLOW}Name: {Style.RESET_ALL}{response['name']}")
+    print(f"{Fore.YELLOW}URL: {Style.RESET_ALL}{response['url']}")
+    print(f"{Fore.YELLOW}Description: {Style.RESET_ALL}{response['description']}")
 
     return response
