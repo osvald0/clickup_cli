@@ -55,7 +55,7 @@ def fetch_user_tasks(status_filter=None) -> List[Task]:
 
     if all_tasks:
         print(
-            f"\n{Fore.GREEN}Found {len(all_tasks)} tasks assigned to you:{Style.RESET_ALL}\n"
+            f"\n{Fore.MAGENTA}Found {len(all_tasks)} tasks assigned to you:{Style.RESET_ALL}\n"
         )
         for task in all_tasks:
             status_color = (
@@ -64,11 +64,11 @@ def fetch_user_tasks(status_filter=None) -> List[Task]:
                 else Fore.GREEN
             )
             print(
-                f"- {status_color}[{task['status']['status']}] {Style.RESET_ALL}{task['name']} (ID: {task['id']})"
+                f"{status_color}[{task['status']['status']}] {Style.RESET_ALL}{task['name']} (ID: {task['id']})"
             )
-            print(f"  {Fore.MAGENTA}URL: {Style.RESET_ALL}{task['url']}")
+            print(f"{Fore.MAGENTA}URL: {Style.RESET_ALL}{task['url']}")
             print(
-                f"  {Fore.CYAN}Due Date: {Style.RESET_ALL}{format_date(task.get('due_date'))}\n"
+                f"{Fore.MAGENTA}Due Date: {Style.RESET_ALL}{format_date(task.get('due_date'))}\n"
             )
     else:
         print(f"{Fore.RED}No tasks found with the specified criteria.{Style.RESET_ALL}")
